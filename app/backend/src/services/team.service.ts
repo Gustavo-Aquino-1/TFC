@@ -10,6 +10,11 @@ class TeamService {
     const teams = await this.model.findAll();
     return grResponse(200, teams);
   }
+
+  async getById(id: number): Promise<IResponse> {
+    const teams = await this.model.findByPk(id);
+    return grResponse(200, teams);
+  }
 }
 
 export default TeamService;
