@@ -76,6 +76,5 @@ describe('Seu teste', () => {
 
     expect(result.status).to.be.equal(200);
     expect(result.body).to.deep.equal(TeamListControl[0]);
-    
   });
 });
