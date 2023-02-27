@@ -59,13 +59,23 @@ describe('Seu teste', () => {
   //   expect(...)
   // });
 
-  it('Testa team', async () => {
+  it('Testa team get', async () => {
     sinon.stub(Model, 'findAll').resolves(TeamList);
 
     const result = await chai.request(app).get('/teams');
 
     expect(result.status).to.be.equal(200);
     expect(result.body).to.deep.equal(TeamListControl);
+    
+  });
+
+  it('Testa team getById', async () => {
+    sinon.stub(Model, 'findByPk').resolves(TeamList[0]);
+
+    const result = await chai.request(app).get('/teams/1');
+
+    expect(result.status).to.be.equal(200);
+    expect(result.body).to.deep.equal(TeamListControl[0]);
     
   });
 });
