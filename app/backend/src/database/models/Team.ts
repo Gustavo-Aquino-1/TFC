@@ -1,5 +1,5 @@
-import { Model } from 'sequelize';
-import sequelize = require('sequelize');
+import { Model, INTEGER, STRING } from 'sequelize';
+// import sequelize = require('sequelize');
 import db from './index';
 
 class Team extends Model {
@@ -10,13 +10,13 @@ class Team extends Model {
 Team.init(
   {
     id: {
-      type: sequelize.INTEGER,
+      type: INTEGER,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
     },
     teamName: {
-      type: sequelize.STRING,
+      type: STRING,
       allowNull: false,
     },
   },
@@ -24,6 +24,7 @@ Team.init(
     sequelize: db,
     timestamps: false,
     underscored: true,
+    tableName: 'teams',
   },
 );
 
