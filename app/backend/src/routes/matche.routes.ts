@@ -21,4 +21,10 @@ matcheRoutes.patch(
   matcheController.update.bind(matcheController),
 );
 
+matcheRoutes.post(
+  '/matches',
+  verifyToken,
+  matcheController.create.bind(matcheController),
+);
+
 export default matcheRoutes;

@@ -33,6 +33,15 @@ class MatcheController {
       next(error);
     }
   }
+
+  async create(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { status, message } = await this.service.create(req.body);
+      res.status(status).json(message);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default MatcheController;

@@ -4,6 +4,7 @@ import Matche from '../database/models/Matche';
 import Team from '../database/models/Team';
 import { grResponse } from '../utils/grResponse';
 import IUpdateMatche from '../interfaces/IUpdateMatche';
+import IMatche from '../interfaces/IMatche';
 
 class MatcheService {
   private model: ModelStatic<Matche> = Matche;
@@ -39,6 +40,11 @@ class MatcheService {
       await this.model.update({ ...body }, { where: { id } });
     }
     return grResponse(200, { message: 'updated' });
+  }
+
+  async create(body: IMatche): Promise<IResponse> {
+    const createdMatche = await this.model.create({ ...body });
+    return grResponse(201, createdMatche);
   }
 }
 
