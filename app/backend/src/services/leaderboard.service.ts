@@ -31,6 +31,27 @@ class LeaderboardService {
 
     return grResponse(200, orderRank(result));
   }
+
+  async rankAway(): Promise<IResponse> {
+    const teams = await this.team.findAll();
+    const matches = await this.matche.findAll({ where: { inProgress: false } });
+
+    const result: ILeaderboard[] = [];
+
+    teams.forEach((e) => {
+      const matchesByTeam = matches.filter((el) => el.awayTeamId === e.id);
+      const results = grResults(matchesByTeam, [
+        'awayTeamGoals',
+        'homeTeamGoals',
+      ]);
+
+      result.push(
+        rankTeam(e, results, matchesByTeam, ['awayTeamGoals', 'homeTeamGoals']),
+      );
+    });
+
+    return grResponse(200, orderRank(result));
+  }
 }
 
 export default LeaderboardService;
