@@ -41,14 +41,18 @@ const grResults = (matches: Matche[], t: string[]) => {
   }) as string[];
 };
 
-// 1º Total de Vitórias; 2º Saldo de gols; 3º Gols a favor; 4º Gols sofridos.
+const resolve = (n1: number, n2: number) => {
+  if (n1 > n2) return 1;
+  return -1;
+};
 
 const orderRank = (arr: ILeaderboard[]) => {
   arr.sort((a, b) => {
-    if (b.totalVictories !== a.totalVictories) return b.totalVictories > a.totalVictories ? 1 : -1;
-    if (b.goalsBalance !== a.goalsBalance) return b.goalsBalance > a.goalsBalance ? 1 : -1;
-    if (b.goalsFavor !== a.goalsFavor) return b.goalsFavor > a.goalsFavor ? 1 : -1;
-    return b.goalsOwn < a.goalsOwn ? 1 : -1;
+    if (b.totalPoints !== a.totalPoints) return resolve(b.totalPoints, a.totalPoints);
+    if (b.totalVictories !== a.totalVictories) return resolve(b.totalVictories, a.totalVictories);
+    if (b.goalsBalance !== a.goalsBalance) return resolve(b.goalsBalance, a.goalsBalance);
+    if (b.goalsFavor !== a.goalsFavor) return resolve(b.goalsFavor, a.goalsFavor);
+    return resolve(b.goalsOwn, a.goalsOwn);
   });
   return arr;
 };
