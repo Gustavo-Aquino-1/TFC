@@ -4,40 +4,8 @@ import Matche from '../database/models/Matche';
 import Team from '../database/models/Team';
 import { grResponse } from '../utils/grResponse';
 import ILeaderboard from '../interfaces/ILeaderboard';
-
-const count = (str: string, arr: string[]) => {
-  let sum = 0;
-  arr.forEach((e) => {
-    if (e === str) sum += 1;
-  });
-  return sum;
-};
-
-const grResults = (matches: Matche[]) =>
-  matches.map((el) => {
-    if (el.homeTeamGoals > el.awayTeamGoals) return 'v';
-    if (el.homeTeamGoals === el.awayTeamGoals) return 'd';
-    return 'l';
-  }) as string[];
-
-const rankTeam = (e: Team, results: string[], matchesByTeam: Matche[]) => {
-  const goalsFavor = matchesByTeam.reduce((a, c) => a + c.homeTeamGoals, 0);
-  const goalsOwn = matchesByTeam.reduce((a, c) => a + c.awayTeamGoals, 0);
-  // const points = count('v', results) * 3 + count('d', results);
-  // const efficiency = (points / (results.length * 3)) * 100;
-  return {
-    name: e.teamName,
-    totalPoints: count('v', results) * 3 + count('d', results),
-    totalGames: results.length,
-    totalVictories: count('v', results),
-    totalDraws: count('d', results),
-    totalLosses: count('l', results),
-    goalsFavor,
-    goalsOwn,
-    // goalsBalance: goalsFavor - goalsOwn,
-    // efficiency,
-  };
-};
+import { rankTeam, grResults, orderRank } from '../utils/leaderboardFunctions';
+// import Tteam from '../interfaces/ITeamTypes';
 
 class LeaderboardService {
   private matche: ModelStatic<Matche> = Matche;
@@ -51,11 +19,17 @@ class LeaderboardService {
 
     teams.forEach((e) => {
       const matchesByTeam = matches.filter((el) => el.homeTeamId === e.id);
-      const results = grResults(matchesByTeam);
+      const results = grResults(matchesByTeam, [
+        'homeTeamGoals',
+        'awayTeamGoals',
+      ]);
 
-      result.push(rankTeam(e, results, matchesByTeam));
+      result.push(
+        rankTeam(e, results, matchesByTeam, ['homeTeamGoals', 'awayTeamGoals']),
+      );
     });
-    return grResponse(200, result);
+
+    return grResponse(200, orderRank(result));
   }
 }
 
