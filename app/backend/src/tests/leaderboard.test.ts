@@ -75,9 +75,25 @@ describe('Seu teste', () => {
       totalLosses: 3,
       goalsFavor: 0,
       goalsOwn: 4,
+      goalsBalance: -4,
+      efficiency: 0
     },
   ];
 
+  const returnResult2 = [
+    {
+      name: 'Bahia',
+      totalPoints: 2,
+      totalGames: 2,
+      totalVictories: 0,
+      totalDraws: 2,
+      totalLosses: 0,
+      goalsFavor: 2,
+      goalsOwn: 2,
+      goalsBalance: 0,
+      efficiency: 33.33
+    },
+  ];
   // let chaiHttpResponse: Response;
 
   // before(async () => {
@@ -112,5 +128,19 @@ describe('Seu teste', () => {
 
     expect(result.status).to.be.equal(200);
     expect(result.body).to.deep.equal(returnResult);
+  });
+
+  it('Testa get leaderboard home', async () => {
+    sinon
+      .stub(Model, 'findAll')
+      .onFirstCall()
+      .resolves(teamList)
+      .onSecondCall()
+      .resolves(matcheList);
+
+    const result = await chai.request(app).get('/leaderboard/away');
+
+    expect(result.status).to.be.equal(200);
+    expect(result.body).to.deep.equal(returnResult2);
   });
 });
