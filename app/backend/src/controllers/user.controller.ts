@@ -12,6 +12,16 @@ class UserController {
       next(error);
     }
   }
+
+  static getRole(_req: Request, res: Response, next: NextFunction) {
+    try {
+      const { payload } = res.locals.user;
+      const { role } = payload;
+      res.status(200).json({ role });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default UserController;
