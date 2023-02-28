@@ -62,6 +62,8 @@ Matche.init(
 );
 
 // lembre-se da regra belogns to alguma coisa, sempre vai se referir a tabela principal no caso a Team
+// a secundaria sempre pertence (belongs) a principal
+// e a principal sempre tem (has) a secundaria
 
 Matche.belongsTo(Team, { foreignKey: 'homeTeamId', as: 'homeTeam' });
 Team.hasMany(Matche, { foreignKey: 'homeTeamId', as: 'matchesHome' });
