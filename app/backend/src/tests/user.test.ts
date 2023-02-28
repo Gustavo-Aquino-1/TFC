@@ -69,4 +69,49 @@ describe('Seu teste', () => {
     expect(result.body).to.haveOwnProperty('token')
     
   });
+
+  it('Testa user login', async () => {
+    const body = { email: 'gust@dev.ma', password: ''}
+    sinon.stub(Model, 'findAll').resolves([userList[0]]);
+    sinon.stub(bcrypt, 'compareSync').resolves(true);
+
+    const result = await chai.request(app).post('/login').send(body);
+
+    expect(result.status).to.be.equal(400);
+    expect(result.body).to.deep.equal({ message: 'All fields must be filled'})
+  });
+
+  it('Testa user login', async () => {
+    const body = { email: '', password: 'fsafsafsafsa'}
+    sinon.stub(Model, 'findAll').resolves([userList[0]]);
+    sinon.stub(bcrypt, 'compareSync').resolves(true);
+
+    const result = await chai.request(app).post('/login').send(body);
+
+    expect(result.status).to.be.equal(400);
+    expect(result.body).to.deep.equal({ message: 'All fields must be filled'})
+  });
+
+  it('Testa user login', async () => {
+    const body = { email: 'abc', password: 'fsafs'}
+    sinon.stub(Model, 'findAll').resolves([userList[0]]);
+    sinon.stub(bcrypt, 'compareSync').resolves(true);
+
+    const result = await chai.request(app).post('/login').send(body);
+
+    expect(result.status).to.be.equal(401);
+    expect(result.body).to.deep.equal({ message: 'Invalid email or password'})
+  });
+
+
+  it('Testa user login', async () => {
+    const body = { email: 'abc@gmail.com', password: '12'}
+    sinon.stub(Model, 'findAll').resolves([userList[0]]);
+    sinon.stub(bcrypt, 'compareSync').resolves(true);
+
+    const result = await chai.request(app).post('/login').send(body);
+
+    expect(result.status).to.be.equal(401);
+    expect(result.body).to.deep.equal({ message: 'Invalid email or password'})
+  });
 });
