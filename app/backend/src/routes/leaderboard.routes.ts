@@ -15,4 +15,9 @@ leaderboardRoutes.get(
   leaderboardController.rankAway.bind(leaderboardController),
 );
 
+leaderboardRoutes.get(
+  '/leaderboard',
+  leaderboardController.rank.bind(leaderboardController),
+);
+
 export default leaderboardRoutes;

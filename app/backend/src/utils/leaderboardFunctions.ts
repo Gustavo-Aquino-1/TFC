@@ -11,8 +11,8 @@ const count = (str: string, arr: string[]) => {
 };
 
 const rankTeam = (e: Team, results: string[], matchesByTeam: Matche[], t: string[]) => {
-  const key1 = `${t[0]}` as ('awayTeamGoals' | 'homeTeamGoals');
-  const key2 = `${t[1]}` as ('awayTeamGoals' | 'homeTeamGoals');
+  const key1 = `${t[0]}` as 'awayTeamGoals' | 'homeTeamGoals';
+  const key2 = `${t[1]}` as 'awayTeamGoals' | 'homeTeamGoals';
   const goalsFavor = matchesByTeam.reduce((a, c) => a + c[`${key1}`], 0);
   const goalsOwn = matchesByTeam.reduce((a, c) => a + c[`${key2}`], 0);
   const points = count('v', results) * 3 + count('d', results);
@@ -32,13 +32,52 @@ const rankTeam = (e: Team, results: string[], matchesByTeam: Matche[], t: string
 };
 
 const grResults = (matches: Matche[], t: string[]) => {
-  const key1 = `${t[0]}` as ('awayTeamGoals' | 'homeTeamGoals');
-  const key2 = `${t[1]}` as ('awayTeamGoals' | 'homeTeamGoals');
+  const key1 = `${t[0]}` as 'awayTeamGoals' | 'homeTeamGoals';
+  const key2 = `${t[1]}` as 'awayTeamGoals' | 'homeTeamGoals';
   return matches.map((el) => {
     if (el[key1] > el[key2]) return 'v';
     if (el[key1] === el[key2]) return 'd';
     return 'l';
   }) as string[];
+};
+
+const grResultsGeneral = (id: number, matches: Matche[]) => matches.map((el) => {
+  const actTeam = el.awayTeamId === id ? 'awayTeamGoals' : 'homeTeamGoals';
+  const otherTeam = actTeam === 'awayTeamGoals' ? 'homeTeamGoals' : 'awayTeamGoals';
+  if (el[actTeam] > el[otherTeam]) return 'v';
+  if (el[actTeam] === el[otherTeam]) return 'd';
+  return 'l';
+}) as string[];
+
+const getGoals = (el: Team, matchesByTeam: Matche[]) => {
+  let goalsFavor = 0;
+  let goalsOwn = 0;
+  matchesByTeam.forEach((e) => {
+    const actTeam = e.awayTeamId === el.id ? 'awayTeamGoals' : 'homeTeamGoals';
+    const otherTeam = actTeam === 'awayTeamGoals' ? 'homeTeamGoals' : 'awayTeamGoals';
+    goalsFavor += e[actTeam];
+    goalsOwn += e[otherTeam];
+  });
+
+  return { goalsFavor, goalsOwn };
+};
+
+const rankTeamGeneral = (e: Team, results: string[], matchesByTeam: Matche[]) => {
+  const { goalsFavor, goalsOwn } = getGoals(e, matchesByTeam);
+  const points = count('v', results) * 3 + count('d', results);
+  const efficiency = ((points / (results.length * 3)) * 100).toFixed(2);
+  return {
+    name: e.teamName,
+    totalPoints: points,
+    totalGames: results.length,
+    totalVictories: count('v', results),
+    totalDraws: count('d', results),
+    totalLosses: count('l', results),
+    goalsFavor,
+    goalsOwn,
+    goalsBalance: goalsFavor - goalsOwn,
+    efficiency: +efficiency,
+  };
 };
 
 const resolve = (n1: number, n2: number) => {
@@ -57,4 +96,4 @@ const orderRank = (arr: ILeaderboard[]) => {
   return arr;
 };
 
-export { rankTeam, grResults, orderRank };
+export { rankTeam, grResults, orderRank, grResultsGeneral, rankTeamGeneral };
