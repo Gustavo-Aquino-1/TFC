@@ -241,5 +241,3 @@ describe('Seu teste', () => {
     });
   });
 });
-
-// git commit -m 'feat: testes da cricao de uma matche implementadas'
