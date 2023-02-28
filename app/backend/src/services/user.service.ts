@@ -5,6 +5,7 @@ import IResponse from '../interfaces/IResponse';
 import ILogin from '../interfaces/ILogin';
 import { grResponse, grResponseErr } from '../utils/grResponse';
 import gnToken from '../JWT/JWT';
+import { validateLogin } from './validations/validateInputs';
 
 class UserService {
   private model: ModelStatic<User> = User;
@@ -13,10 +14,12 @@ class UserService {
     const users = await this.model.findAll();
     const user = users.find((e) => e.email === body.email);
 
-    const checkPass = bcrypt.compareSync(body.password, user?.password || '_');
-    console.log(checkPass);
+    const error = validateLogin(body);
+    if (error) return grResponseErr(401, 'Invalid email or password');
 
-    if (!user || !checkPass) return grResponseErr(404, 'User not found');
+    const checkPass = bcrypt.compareSync(body.password, user?.password || '_');
+
+    if (!user || !checkPass) return grResponseErr(401, 'Invalid email or password');
     // if (checkPass)
 
     const { id, email, role, username } = user;
