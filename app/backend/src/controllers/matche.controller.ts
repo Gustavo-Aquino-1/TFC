@@ -4,9 +4,10 @@ import MatcheService from '../services/matche.service';
 class MatcheController {
   private service: MatcheService = new MatcheService();
 
-  async get(_req: Request, res: Response, next: NextFunction) {
+  async get(req: Request, res: Response, next: NextFunction) {
     try {
-      const { status, message } = await this.service.get();
+      const { inProgress } = req.query;
+      const { status, message } = await this.service.get(inProgress as string);
       res.status(status).json(message);
     } catch (error) {
       next(error);

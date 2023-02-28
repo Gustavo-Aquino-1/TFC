@@ -7,13 +7,20 @@ import { grResponse } from '../utils/grResponse';
 class MatcheService {
   private model: ModelStatic<Matche> = Matche;
 
-  async get(): Promise<IResponse> {
+  async get(inProgress: string): Promise<IResponse> {
     const matches = await this.model.findAll({
       include: [
         { model: Team, as: 'homeTeam', attributes: ['teamName'] },
         { model: Team, as: 'awayTeam', attributes: ['teamName'] },
       ],
     });
+    if (!inProgress) return grResponse(200, matches);
+
+    const isTrue = inProgress === 'true';
+    if (isTrue) return grResponse(200, matches.filter((e) => e.inProgress));
+
+    const isFalse = inProgress === 'false';
+    if (isFalse) return grResponse(200, matches.filter((e) => !e.inProgress));
 
     return grResponse(200, matches);
   }
