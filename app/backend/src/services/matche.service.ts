@@ -14,6 +14,7 @@ class MatcheService {
         { model: Team, as: 'awayTeam', attributes: ['teamName'] },
       ],
     });
+
     if (!inProgress) return grResponse(200, matches);
 
     const isTrue = inProgress === 'true';
@@ -23,6 +24,12 @@ class MatcheService {
     if (isFalse) return grResponse(200, matches.filter((e) => !e.inProgress));
 
     return grResponse(200, matches);
+  }
+
+  async finish(id: number): Promise<IResponse> {
+    // const matche = await this.model.findByPk(id);
+    await this.model.update({ inProgress: false }, { where: { id } });
+    return grResponse(200, { message: 'Finished' });
   }
 }
 
