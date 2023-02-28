@@ -1,40 +1,38 @@
 import * as sinon from 'sinon';
 import * as chai from 'chai';
+import * as bcrypt from 'bcryptjs';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 import { Model } from 'sequelize';
 
 import { app } from '../app';
-import Team from '../database/models/Team';
-
-import { Response } from 'superagent';
+import User from '../database/models/User';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
 describe('Seu teste', () => {
+
   beforeEach(sinon.restore);
 
-  const TeamList = [
-    new Team({
+  const userList = [
+    new User({
       id: 10,
-      teamName: 'Corinthians' 
-    }),
-    new Team({
-      id: 11,
-      teamName: 'Palmeiras' 
+      username: 'Gustavo Aquino',
+      role: 'admin',
+      email: 'gust@dev.ma',
+      password: 'mypassword'
     })
   ]
 
-  const TeamListControl = [
+  const userListControl = [
     {
       id: 10,
-      teamName: 'Corinthians' 
-    },
-    {
-      id: 11,
-      teamName: 'Palmeiras' 
+      username: 'Gustavo Aquino',
+      role: 'admin',
+      email: 'gust@dev.ma',
+      password: 'mypassword'
     }
   ]
 
@@ -60,22 +58,15 @@ describe('Seu teste', () => {
   //   expect(...)
   // });
 
-  it('Testa team get', async () => {
-    sinon.stub(Model, 'findAll').resolves(TeamList);
+  it('Testa user login', async () => {
+    const body = { email: 'gust@dev.ma', password: 'mypassword'}
+    sinon.stub(Model, 'findAll').resolves([userList[0]]);
+    sinon.stub(bcrypt, 'compareSync').resolves(true);
 
-    const result = await chai.request(app).get('/teams');
+    const result = await chai.request(app).post('/login').send(body);
 
     expect(result.status).to.be.equal(200);
-    expect(result.body).to.deep.equal(TeamListControl);
+    expect(result.body).to.haveOwnProperty('token')
     
-  });
-
-  it('Testa team getById', async () => {
-    sinon.stub(Model, 'findByPk').resolves(TeamList[0]);
-
-    const result = await chai.request(app).get('/teams/1');
-
-    expect(result.status).to.be.equal(200);
-    expect(result.body).to.deep.equal(TeamListControl[0]);
   });
 });
