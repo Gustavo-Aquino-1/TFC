@@ -34,7 +34,10 @@ class MatcheService {
   }
 
   async update(id: number, body: IUpdateMatche): Promise<IResponse> {
-    await this.model.update({ ...body }, { where: { id } });
+    const matche = await this.model.findByPk(id);
+    if (matche?.inProgress) {
+      await this.model.update({ ...body }, { where: { id } });
+    }
     return grResponse(200, { message: 'updated' });
   }
 }

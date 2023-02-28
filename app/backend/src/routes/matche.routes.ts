@@ -16,7 +16,7 @@ matcheRoutes.patch(
 );
 
 matcheRoutes.patch(
-  '/matche/:id',
+  '/matches/:id',
   verifyToken,
   matcheController.update.bind(matcheController),
 );
