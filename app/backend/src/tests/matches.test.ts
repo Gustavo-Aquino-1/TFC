@@ -7,7 +7,6 @@ import { Model } from 'sequelize';
 import { app } from '../app';
 import Matche from '../database/models/Matche';
 
-
 chai.use(chaiHttp);
 
 const { expect } = chai;
@@ -22,7 +21,7 @@ describe('Seu teste', () => {
       homeTeamGoals: 1,
       awayTeamId: 2,
       awayTeamGoals: 2,
-      inProgress: true
+      inProgress: true,
     }),
     new Matche({
       id: 2,
@@ -30,9 +29,9 @@ describe('Seu teste', () => {
       homeTeamGoals: 4,
       awayTeamId: 5,
       awayTeamGoals: 2,
-      inProgress: false
+      inProgress: false,
     }),
-  ]
+  ];
 
   const matcheListControl = [
     {
@@ -41,7 +40,7 @@ describe('Seu teste', () => {
       homeTeamGoals: 1,
       awayTeamId: 2,
       awayTeamGoals: 2,
-      inProgress: true
+      inProgress: true,
     },
     {
       id: 2,
@@ -49,9 +48,9 @@ describe('Seu teste', () => {
       homeTeamGoals: 4,
       awayTeamId: 5,
       awayTeamGoals: 2,
-      inProgress: false
-    }
-  ]
+      inProgress: false,
+    },
+  ];
 
   // let chaiHttpResponse: Response;
 
@@ -114,28 +113,62 @@ describe('Seu teste', () => {
   it('Testa finish do matche passando token invalido', async () => {
     sinon.stub(Model, 'update').resolves();
 
-    const result = await chai.request(app).patch('/matches/1/finish').set('Authorization','8bs');
+    const result = await chai
+      .request(app)
+      .patch('/matches/1/finish')
+      .set('Authorization', '8bs');
 
     expect(result.status).to.be.equal(401);
-    expect(result.body).to.deep.equal({ message: 'Token must be a valid token' });
+    expect(result.body).to.deep.equal({
+      message: 'Token must be a valid token',
+    });
   });
 
   it('Testa finish do matche passando token invalido', async () => {
     sinon.stub(Model, 'update').resolves();
 
-    const result = await chai.request(app).patch('/matches/1/finish').set('Authorization','8bs');
+    const result = await chai
+      .request(app)
+      .patch('/matches/1/finish')
+      .set('Authorization', '8bs');
 
     expect(result.status).to.be.equal(401);
-    expect(result.body).to.deep.equal({ message: 'Token must be a valid token' });
+    expect(result.body).to.deep.equal({
+      message: 'Token must be a valid token',
+    });
   });
 
   it('Testa finish do matche passando token valido', async () => {
     sinon.stub(Model, 'update').resolves();
 
-    const result = await chai.request(app).patch('/matches/1/finish').set('Authorization','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoxLCJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInJvbGUiOiJhZG1pbiIsInVzZXJuYW1lIjoiQWRtaW4ifSwiaWF0IjoxNjc3NTkxODEwLCJleHAiOjE2Nzg0NTU4MTB9.49swV3jOhW_qumAUVQBQqRpTUsJkD1JMqeXxoV8VZmI');
+    const result = await chai
+      .request(app)
+      .patch('/matches/1/finish')
+      .set(
+        'Authorization',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoxLCJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInJvbGUiOiJhZG1pbiIsInVzZXJuYW1lIjoiQWRtaW4ifSwiaWF0IjoxNjc3NTkxODEwLCJleHAiOjE2Nzg0NTU4MTB9.49swV3jOhW_qumAUVQBQqRpTUsJkD1JMqeXxoV8VZmI',
+      );
 
     expect(result.status).to.be.equal(200);
     expect(result.body).to.deep.equal({ message: 'Finished' });
   });
 
+  it('Testa update do matche token valido', async () => {
+    sinon.stub(Model, 'update').resolves();
+
+    const result = await chai
+      .request(app)
+      .patch('/matches/1')
+      .send({
+        homeTeamGoals: 100,
+        awayTeamGoals: 81,
+      })
+      .set(
+        'Authorization',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoxLCJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInJvbGUiOiJhZG1pbiIsInVzZXJuYW1lIjoiQWRtaW4ifSwiaWF0IjoxNjc3NTkxODEwLCJleHAiOjE2Nzg0NTU4MTB9.49swV3jOhW_qumAUVQBQqRpTUsJkD1JMqeXxoV8VZmI',
+      );
+
+    expect(result.status).to.be.equal(200);
+    expect(result.body).to.deep.equal({ message: 'updated' });
+  });
 });
