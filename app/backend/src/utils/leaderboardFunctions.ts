@@ -2,13 +2,8 @@ import ILeaderboard from '../interfaces/ILeaderboard';
 import Matche from '../database/models/Matche';
 import Team from '../database/models/Team';
 
-const count = (str: string, arr: string[]) => {
-  let sum = 0;
-  arr.forEach((e) => {
-    if (e === str) sum += 1;
-  });
-  return sum;
-};
+const count = (str: string, arr: string[]) =>
+  arr.reduce((a, c) => a + (c === str ? 1 : 0), 0);
 
 const rankTeam = (e: Team, results: string[], matchesByTeam: Matche[], t: string[]) => {
   const key1 = `${t[0]}` as 'awayTeamGoals' | 'homeTeamGoals';
