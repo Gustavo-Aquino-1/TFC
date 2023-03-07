@@ -2,8 +2,11 @@
 
 Neste projeto foi realizada a construção de uma API rest com typescript, que permiti fazer o CRUD de usuarios, times e partidas. Para fazer o armazenamento das informação foi utilizado o sequelize juntamente com um container docker do mysql. Aqui você poderá acompanhar a classficação dos seus times prediletos , podendo optar por ver seu desempenho fora de casa (visitante), em casa (mandante) e geral (visitante e mandante), pode-se também ver partidas em andamento e finalizadas, podendo filtrar pela qual quiser!
 
+<br />
 
 ![Screenshot](img-example-tfc.png)
+
+<br />
 
 <details>
 <summary><strong> Rodando com Docker 🐳 </strong></summary><br />
