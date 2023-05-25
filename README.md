@@ -24,7 +24,7 @@ Neste projeto foi realizada a construção de uma API rest com typescript, que p
   <br />
   <details>
   <summary>
-    Funcionalidades
+    Funcionalidades / Rotas
   </summary>
 
   <ul>
