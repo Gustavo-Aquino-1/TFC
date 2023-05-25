@@ -17,11 +17,6 @@ Neste projeto foi realizada a construção de uma API rest com typescript, que p
 </details>
 
 
-
-
-<details>
-  <summary><strong>Tecnologias Utilizadas e Funcionalidades 💻 </strong></summary>
-  <br />
   <details>
   <summary>
     Funcionalidades / Rotas
@@ -62,4 +57,3 @@ Neste projeto foi realizada a construção de uma API rest com typescript, que p
  </details>
 
 <br />
-</details>
