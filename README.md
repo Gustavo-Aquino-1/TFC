@@ -19,7 +19,7 @@ Neste projeto foi realizada a construção de uma API rest com typescript, que p
 
   <details>
   <summary>
-    Funcionalidades / Rotas
+    Docs 📄
   </summary>
 
   <ul>
@@ -41,7 +41,7 @@ Neste projeto foi realizada a construção de uma API rest com typescript, que p
 
 <details>
   <summary>
-    Tecnologias ultizadas
+    Tecnologias ultizadas 💻
   </summary>
 
   <ul>
